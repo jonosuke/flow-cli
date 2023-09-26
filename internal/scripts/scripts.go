@@ -27,6 +27,7 @@ import (
 	jsoncdc "github.com/onflow/cadence/encoding/json"
 	"github.com/spf13/cobra"
 
+	"github.com/onflow/flow-cli/internal/command"
 	"github.com/onflow/flow-cli/internal/util"
 )
 
@@ -54,8 +55,13 @@ func (r *scriptResult) JSON() any {
 func (r *scriptResult) String() string {
 	var b bytes.Buffer
 	writer := util.CreateTabWriter(&b)
-
-	_, _ = fmt.Fprintf(writer, "Result: %s\n", r.Value)
+	var outputValue any
+	if command.Flags.RawOutput {
+		outputValue = r.Value.ToGoValue()
+	} else {
+		outputValue = r.Value
+	}
+	_, _ = fmt.Fprintf(writer, "Result: %s\n", outputValue)
 
 	_ = writer.Flush()
 
@@ -63,5 +69,9 @@ func (r *scriptResult) String() string {
 }
 
 func (r *scriptResult) Oneliner() string {
-	return r.Value.String()
+	if command.Flags.RawOutput {
+		return r.Value.ToGoValue().(string)
+	} else {
+		return r.Value.String()
+	}
 }

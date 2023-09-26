@@ -360,4 +360,5 @@ type GlobalFlags struct {
 	Yes              bool
 	ConfigPaths      []string
 	SkipVersionCheck bool
+	RawOutput        bool
 }

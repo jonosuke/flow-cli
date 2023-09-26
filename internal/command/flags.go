@@ -124,6 +124,14 @@ func InitFlags(cmd *cobra.Command) {
 		Flags.SkipVersionCheck,
 		"Skip version check during start up",
 	)
+
+	cmd.PersistentFlags().BoolVarP(
+		&Flags.RawOutput,
+		"raw",
+		"r",
+		Flags.RawOutput,
+		"Output without processing",
+	)
 }
 
 // bindFlags bind all the flags needed.
